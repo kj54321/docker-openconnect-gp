@@ -1,4 +1,5 @@
 #!/bin/sh -el
+openconnect=/usr/local/sbin/openconnect
 __DEBUG_OPTIONS=
 __PROTOCOL=
 if [ -n "$VPN_DEBUG" ]; then
@@ -11,17 +12,17 @@ fi
 
 # if password and servercert both false
 if [ -z "$VPN_PASSWORD" -a -z "$VPN_OPENCONNECT_COOKIE" ]; then
-  exec openconnect $__PROTOCOL $__DEBUG_OPTIONS "$@"
+  exec $openconnect $__PROTOCOL $__DEBUG_OPTIONS "$@"
 elif [ -n "$VPN_PASSWORD" -a -z "$VPN_OPENCONNECT_COOKIE" ]; then
-  exec openconnect $__PROTOCOL --passwd-on-stdin $__DEBUG_OPTIONS "$@" <<END
+  exec $openconnect $__PROTOCOL --passwd-on-stdin $__DEBUG_OPTIONS "$@" <<END
 $VPN_PASSWORD
 END
 elif [ -z "$VPN_PASSWORD" -a -n "$VPN_OPENCONNECT_COOKIE" ]; then
-  exec openconnect $__PROTOCOL --cookie-on-stdin $__DEBUG_OPTIONS "$@" <<END
+  exec $openconnect $__PROTOCOL --cookie-on-stdin $__DEBUG_OPTIONS "$@" <<END
 $VPN_OPENCONNECT_COOKIE
 END
 else
-  exec openconnect $__PROTOCOL --passwd-on-stdin --cookie-on-stdin $__DEBUG_OPTIONS "$@" <<END
+  exec $openconnect $__PROTOCOL --passwd-on-stdin --cookie-on-stdin $__DEBUG_OPTIONS "$@" <<END
 $VPN_PASSWORD
 $VPN_OPENCONNECT_COOKIE
 END
