@@ -1,7 +1,8 @@
 # docker-openconnect-gp 
 
 Openconnect globalprotect in docker. Support openconect with 2FA/OTP, GSAPI, proxy.
-[Fork and rewrite from](https://github.com/gzm55/docker-vpn-client)
+
+[Fork and rewrite](https://github.com/gzm55/docker-vpn-client)
 
 Build:
 ```
