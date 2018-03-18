@@ -1,35 +1,24 @@
-# docker-vpn-client
+# docker-openconnect-gp 
 
-VPN clients in docker. Now support pptp and openconect client.
-It starts a persist pptp tunnel and adds routing rules.
+Openconnect globalprotect in docker. Support openconect with 2FA/OTP, GSAPI, proxy.
+[Fork and rewrite from](https://github.com/gzm55/docker-vpn-client)
+
+Build:
+```
+    docker build https://github.com/kj54321/docker-openconnect-gp
+```
+Or:
+```
+    git clone https://github.com/kj54321/docker-openconnect-gp
+    cd docker-openconnect-gp && ./build.sh
+```
 
 Run it in bash like this:
 
 ```Bash
-# print help message
-docker run --rm gzm55/vpn-client --help
-
-# start a pptp tunnel
-VPN_ROUTING_IPS="172.0.0.0/8 www.google.com"
-VPN_PASSOWRD=xxx
-#VPN_DEBUG=y
-
-docker run --net=host \
-           --privileged=true \
-           --device=/dev/ppp \
-           --cap-add=NET_ADMIN \
-           --name pptp-tunnel-$VPN_SERVER \
-           -e VPN_ROUTING_IPS="$VPN_ROUTING_IPS" \
-           -e VPN_DEBUG="$VPN_DEBUG" \
-           --env-file <(cat <<-END
-		VPN_PASSWORD=$VPN_PASSOWRD
-		END
-           ) \
-           --detach \
-           gzm55/vpn-client pptp <server-domain-or-ip> <user> [<pppd-options>]
 
 #view openconnect help
-docker run -it --rm gzm55/vpn-client openconect --help
+docker run -it --rm kj54321/docker-openconnect-gp openconect --help
 
 # start a openconnect tunnel
 
@@ -46,12 +35,11 @@ docker run --net=host \
 		END
            ) \
            --detach \
-           gzm55/vpn-client openconnect [<openconnect-options>] <server-domain-or-ip>
+           kj54321/docker-openconnect-gp openconnect [<openconnect-options>] <server-domain-or-ip>
 ```
 
 Accepted docker environment variables for vpn client:
 
-* VPN_ROUTING_IPS: [pptp] space seperated string, each like '172.0.0.0/8', 'www.google.com' or 1.2.3.4
-* VPN_DEBUG: [pptp] no empty string will enable debug option for pppd
-* VPN_PASSOWRD: [all] login password
-* VPN_OPENCONNECT_COOKIE: [openconnect] login cookie
+* VPN_DEBUG: no empty string will enable debug option for pppd
+* VPN_PASSOWRD: login password
+* VPN_OPENCONNECT_COOKIE: login cookie
