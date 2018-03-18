@@ -4,8 +4,9 @@ LABEL version="0.1"
 LABEL description="Openconnect for gp in docker"
 
 RUN set -ex \
-# 1. add test repo
+# 1. add test repo, fix nsswitch error
     && echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
+    && echo 'hosts: files dns' >> /etc/nsswitch.conf \
     && apk --update --no-progress upgrade \
     && apk add --no-progress stoken-dev@testing \
 # 2. build and install openconnect (fork from: https://github.com/gzm55/docker-vpn-client)
