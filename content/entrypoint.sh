@@ -8,6 +8,12 @@ if [ -z "$*" -o "$1" = "-h" -o "$1" = "--help" ]; then
   exit 0
 fi
 
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo 0 > /proc/sys/net/ipv4/conf/all/rp_filter
+for iface in $(ip a | grep eth | grep inet | awk '{print $2}'); do
+  iptables -t nat -A POSTROUTING -s "$iface" -j MASQUERADE
+done
+
 ENTRYPOINT="/entrypoint-$1"
 [ -x "$ENTRYPOINT" ] || ENTRYPOINT="$1"
 
